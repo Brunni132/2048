@@ -18,6 +18,7 @@ $tile-gold-glow-color: lighten($tile-gold-color, 15%);
 
 $game-container-margin-top: 40px;
 $game-container-background: #bbada0;
+$page-background-color: #faf8ef;
 
 $transition-speed: 100ms;
 
@@ -469,7 +470,7 @@ hr {
 }
 
 .game-explanation {
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 @include smaller($mobile-threshold) {
@@ -546,4 +547,41 @@ hr {
       margin-top: 30px !important;
     }
   }
+}
+
+// COTC added
+.console-container {
+	background-color: $tile-color;
+	margin-top: 30px;
+	border: 1px solid $game-container-background;
+	border-radius: $tile-border-radius * 2;
+	position: relative;
+	pre {
+		font-family: "Ubuntu Mono";
+		font-size: 14px;
+		margin: 10px; padding: 0;
+		overflow: auto;
+		height: 14px;
+		-webkit-transition: height 500ms;
+		-moz-transition: height 500ms;
+		-webkit-transition-delay: 1s;
+		-moz-transition-delay: 1s;
+	}
+	span {
+		font-size: 12px;
+		position: absolute;
+		background: $page-background-color;
+		border-radius: $tile-border-radius * 2;
+		top: -10px;
+		left: 20px;
+		padding: 0 5px;
+	}
+}
+
+.console-container:hover {
+	pre {
+		height: 300px;
+		-webkit-transition-delay: 0s;
+		-moz-transition-delay: 0s;
+	}
 }

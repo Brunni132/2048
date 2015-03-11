@@ -3,6 +3,9 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.inputManager   = new InputManager;
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
+  // COTC added this
+  this.cloudBuilder   = new CloudBuilder(this.storageManager);
+  // END COTC
 
   this.startTiles     = 2;
 

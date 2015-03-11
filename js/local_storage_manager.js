@@ -21,6 +21,7 @@ window.fakeStorage = {
 function LocalStorageManager() {
   this.bestScoreKey     = "bestScore";
   this.gameStateKey     = "gameState";
+  this.gamerDataKey     = "gamerData";
 
   var supported = this.localStorageSupported();
   this.storage = supported ? window.localStorage : window.fakeStorage;
@@ -61,3 +62,14 @@ LocalStorageManager.prototype.setGameState = function (gameState) {
 LocalStorageManager.prototype.clearGameState = function () {
   this.storage.removeItem(this.gameStateKey);
 };
+
+// COTC added
+LocalStorageManager.prototype.getGamerData = function() {
+    var dataJSON = this.storage.getItem(this.gamerDataKey);
+    return dataJSON ? JSON.parse(dataJSON) : null;
+};
+
+LocalStorageManager.prototype.setGamerData = function(gamerData) {
+	this.storage.setItem(this.gamerDataKey, JSON.stringify(gamerData));
+};
+
