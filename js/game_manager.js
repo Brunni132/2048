@@ -4,6 +4,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
   // COTC added this
+  this.bestScore      = 0;
   this.cloudBuilder   = new CloudBuilder(this.storageManager);
   // END COTC
 
@@ -14,6 +15,11 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
 
   this.setup();
+
+  //COTC Update the score once logged in
+  this.cloudBuilder.setup(function(err, gamerData) {
+    this.updateBestScore();
+  }.bind(this));
 }
 
 // Restart the game
@@ -58,7 +64,7 @@ GameManager.prototype.setup = function () {
   }
 
   // Update the actuator
-  this.actuate();
+  this.update();
 };
 
 // Set up the initial tiles to start the game with
@@ -80,25 +86,41 @@ GameManager.prototype.addRandomTile = function () {
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {
-  if (this.storageManager.getBestScore() < this.score) {
-    this.storageManager.setBestScore(this.score);
-  }
-
   // Clear the state when the game is over (game over only, not win)
   if (this.over) {
     this.storageManager.clearGameState();
   } else {
     this.storageManager.setGameState(this.serialize());
   }
-
+  
   this.actuator.actuate(this.grid, {
     score:      this.score,
     over:       this.over,
     won:        this.won,
-    bestScore:  this.storageManager.getBestScore(),
+    bestScore:  this.bestScore,
     terminated: this.isGameTerminated()
   });
 
+};
+
+GameManager.prototype.update = function() {
+  // Game over, post our score
+  if (this.over || this.won) {
+    this.cloudBuilder.postScore(this.score, function (err, result) {
+      // Once the score is posted, and update the list of high scores
+      this.updateBestScore();
+    }.bind(this));
+  }
+  // Update display
+  this.actuate();
+};
+
+GameManager.prototype.updateBestScore = function() {
+  // Update display with the new high score
+  this.cloudBuilder.fetchHighScore(function(score) {
+    this.bestScore = score;
+    this.actuate();
+  }.bind(this));
 };
 
 // Represent the current game as an object
@@ -189,7 +211,7 @@ GameManager.prototype.move = function (direction) {
       this.over = true; // Game over!
     }
 
-    this.actuate();
+    this.update();
   }
 };
 

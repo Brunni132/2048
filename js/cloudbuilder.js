@@ -1,22 +1,24 @@
 // COTC added all
 function CloudBuilder(storageManager) {
+  this.boardName = "score";
   this.storageManager = storageManager;
 
   this.consoleNode = document.querySelector("#console");
-
-  this.setup();
 }
 
-CloudBuilder.prototype.setup = function() {
+CloudBuilder.prototype.setup = function(whenDone) {
   this.clan = Clan('testgame-key', 'testgame-secret');
-  this.log("CloudBuilder set up!");
+  this.log("CloudBuilder set-up!");
 
   // We need to log in if not done already
   this.gamerData = this.storageManager.getGamerData();
   if (!this.gamerData) {
-    this.loginAnonymously(function(err, gamerData) {});
+    this.loginAnonymously(whenDone);
   } else {
     this.log("Reused login data", this.gamerData);
+    if (whenDone) {
+      whenDone(null, this.gamerData);
+    }
   }
 };
 
@@ -43,6 +45,30 @@ CloudBuilder.prototype.loginAnonymously = function(whenDone) {
       whenDone(err, gamer);
     }
 	}.bind(this));
+};
+
+CloudBuilder.prototype.fetchHighScore = function(whenDone) {
+  this.ensureLoggedIn(function() {
+    var lb = this.clan.withGamer(this.gamerData).leaderboards();
+    lb.getHighscores(this.boardName, 1, 10, function(err, scores) {
+      this.log("Got scores", scores);
+      // No score (leaderboard absent)
+      if (!scores || scores.score.scores.length == 0) {
+        whenDone(0);
+      } else {
+        whenDone(scores.score.scores[0].score.score);
+      }
+    }.bind(this));
+  }.bind(this));
+};
+
+CloudBuilder.prototype.postScore = function(score, whenDone) {
+  this.ensureLoggedIn(function() {
+    console.log("Posting score " + score + " on board " + this.boardName);
+
+    var lb = this.clan.withGamer(this.gamerData).leaderboards();
+    lb.set(this.boardName, "hightolow", {"score": score, "info": "Game finished"}, whenDone);
+  }.bind(this));
 };
 
 CloudBuilder.prototype.log = function(text, object) {
