@@ -99,6 +99,7 @@ GameManager.prototype.actuate = function () {
     won:          this.won,
     bestScore:    this.bestScore(),
     leaderboards: this.leaderboards,
+    gamerId:      this.cloudBuilder.gamerData ? this.cloudBuilder.gamerData.gamer_id : null,
     terminated:   this.isGameTerminated()
   });
 

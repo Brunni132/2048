@@ -709,8 +709,10 @@ hr {
     height: 14px;
     -webkit-transition: height 500ms;
     -moz-transition: height 500ms;
+    transition: height 500ms;
     -webkit-transition-delay: 1s;
-    -moz-transition-delay: 1s; }
+    -moz-transition-delay: 1s;
+    transition-delay: 1s; }
   .console-container span {
     font-size: 12px;
     position: absolute;
@@ -723,7 +725,8 @@ hr {
 .console-container:hover pre {
   height: 300px;
   -webkit-transition-delay: 0s;
-  -moz-transition-delay: 0s; }
+  -moz-transition-delay: 0s;
+  transition-delay: 0s; }
 
 .leaderboard {
   position: relative;
@@ -749,5 +752,8 @@ hr {
   .leaderboard .scores {
     float: right;
     text-align: right; }
+  .leaderboard .highlighted-score {
+    color: #e6d7c9;
+    font-weight: bold; }
 
 /*# sourceMappingURL=main.css.map */

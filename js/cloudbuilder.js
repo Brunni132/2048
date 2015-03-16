@@ -1,6 +1,7 @@
 // COTC added all
 function CloudBuilder(storageManager) {
   this.boardName = "score";
+  this.maxScores = 5;
   this.storageManager = storageManager;
 
   this.consoleNode = document.querySelector("#console");
@@ -50,7 +51,7 @@ CloudBuilder.prototype.loginAnonymously = function(whenDone) {
 CloudBuilder.prototype.fetchHighScores = function(whenDone) {
   this.ensureLoggedIn(function() {
     var lb = this.clan.withGamer(this.gamerData).leaderboards();
-    lb.getHighscores(this.boardName, 1, 10, function(err, result) {
+    lb.getHighscores(this.boardName, 1, this.maxScores, function(err, result) {
       this.log("Got scores", err || result);
       whenDone(result.score.scores);
     }.bind(this));

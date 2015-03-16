@@ -613,5 +613,10 @@ hr {
     float: right;
     text-align: right;
   }
+  
+  .highlighted-score {
+    color: darken($tile-color, 5%);
+    font-weight: bold;
+  }
 }
 

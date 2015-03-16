@@ -25,7 +25,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
 
     self.updateScore(metadata.score);
     self.updateBestScore(metadata.bestScore);
-    self.updateLeaderboards(metadata.leaderboards);
+    self.updateLeaderboards(metadata.leaderboards, metadata.gamerId);
 
     if (metadata.terminated) {
       if (metadata.over) {
@@ -127,12 +127,18 @@ HTMLActuator.prototype.updateBestScore = function (bestScore) {
   this.bestContainer.textContent = bestScore;
 };
 
-HTMLActuator.prototype.updateLeaderboards = function (scores) {
+HTMLActuator.prototype.updateLeaderboards = function (scores, gamerId) {
   this.leaderboardNames.innerHTML = this.leaderboardScores.innerHTML = "";
   if (scores) {
     scores.forEach(function(entry) {
-      this.leaderboardNames.innerHTML += entry.profile.displayName + "<br/>";
-      this.leaderboardScores.innerHTML += entry.score.score + "<br/>";
+      function highlight(text) {
+        if (entry.gamer_id === gamerId)
+          return "<span class='highlighted-score'>" + text + "</span>";
+        return text;
+      };
+
+      this.leaderboardNames.innerHTML += highlight(entry.profile.displayName) + "<br/>";
+      this.leaderboardScores.innerHTML += highlight(entry.score.score) + "<br/>";
     }.bind(this));
   }
 };
