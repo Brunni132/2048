@@ -4,7 +4,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
   // COTC added this
-  this.bestScore      = 0;
+  this.leaderboards   = null;
   this.cloudBuilder   = new CloudBuilder(this.storageManager);
   // END COTC
 
@@ -94,11 +94,12 @@ GameManager.prototype.actuate = function () {
   }
   
   this.actuator.actuate(this.grid, {
-    score:      this.score,
-    over:       this.over,
-    won:        this.won,
-    bestScore:  this.bestScore,
-    terminated: this.isGameTerminated()
+    score:        this.score,
+    over:         this.over,
+    won:          this.won,
+    bestScore:    this.bestScore(),
+    leaderboards: this.leaderboards,
+    terminated:   this.isGameTerminated()
   });
 
 };
@@ -117,11 +118,18 @@ GameManager.prototype.update = function() {
 
 GameManager.prototype.updateBestScore = function() {
   // Update display with the new high score
-  this.cloudBuilder.fetchHighScore(function(score) {
-    this.bestScore = score;
+  this.cloudBuilder.fetchHighScores(function(scores) {
+    this.leaderboards = scores;
     this.actuate();
   }.bind(this));
 };
+
+GameManager.prototype.bestScore = function() {
+  if (this.leaderboards) {
+    return this.leaderboards[0].score.score;
+  }
+  return 0;
+}
 
 // Represent the current game as an object
 GameManager.prototype.serialize = function () {

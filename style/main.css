@@ -711,12 +711,6 @@ hr {
     -moz-transition: height 500ms;
     -webkit-transition-delay: 1s;
     -moz-transition-delay: 1s; }
-  .console-container .console-form {
-    overflow: hidden;
-    margin: 0 10px;
-    height: 0;
-    -webkit-transition: height 300ms;
-    -moz-transition: height 300ms; }
   .console-container span {
     font-size: 12px;
     position: absolute;
@@ -730,7 +724,30 @@ hr {
   height: 300px;
   -webkit-transition-delay: 0s;
   -moz-transition-delay: 0s; }
-.console-container:hover .console-form {
-  height: 30px; }
+
+.leaderboard {
+  position: relative;
+  background-color: #bbada0;
+  border-radius: 6px;
+  color: white;
+  margin-top: 20px;
+  padding: 30px 20px 15px 20px; }
+  .leaderboard:after {
+    position: absolute;
+    width: 100%;
+    top: 10px;
+    left: 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 13px;
+    text-align: center;
+    color: #eee4da;
+    content: "Leaderboards"; }
+  .leaderboard .names {
+    float: left; }
+  .leaderboard .scores {
+    float: right;
+    text-align: right; }
 
 /*# sourceMappingURL=main.css.map */

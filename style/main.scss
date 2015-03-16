@@ -227,9 +227,9 @@ hr {
         margin-left: 9px;
         // margin-top: 59px;
 
-	&.keep-playing-button {
-	  display: none;
-	}
+        &.keep-playing-button {
+          display: none;
+        }
       }
 
       @include animation(fade-in 800ms ease $transition-speed * 12);
@@ -239,9 +239,9 @@ hr {
         background: rgba($tile-gold-color, .5);
         color: $bright-text-color;
 
-	a.keep-playing-button {
-	  display: inline-block;
-	}
+        a.keep-playing-button {
+          display: inline-block;
+        }
       }
 
       &.game-won, &.game-over {
@@ -551,37 +551,67 @@ hr {
 
 // COTC added
 .console-container {
-	background-color: $tile-color;
-	margin-top: 30px;
-	border: 1px solid $game-container-background;
-	border-radius: $tile-border-radius * 2;
-	position: relative;
-	pre {
-		font-family: "Ubuntu Mono";
-		font-size: 14px;
-		margin: 10px; padding: 0;
-		overflow: auto;
-		height: 14px;
-		-webkit-transition: height 500ms;
-		-moz-transition: height 500ms;
-		-webkit-transition-delay: 1s;
-		-moz-transition-delay: 1s;
-	}
-	span {
-		font-size: 12px;
-		position: absolute;
-		background: $page-background-color;
-		border-radius: $tile-border-radius * 2;
-		top: -10px;
-		left: 20px;
-		padding: 0 5px;
-	}
+  background-color: $tile-color;
+  margin-top: 30px;
+  border: 1px solid $game-container-background;
+  border-radius: $tile-border-radius * 2;
+  position: relative;
+  pre {
+    font-family: "Ubuntu Mono";
+    font-size: 14px;
+    margin: 10px; padding: 0;
+    overflow: auto;
+    height: 14px;
+    @include transition(height 500ms);
+    @include transition-delay(1s);
+  }
+  span {
+    font-size: 12px;
+    position: absolute;
+    background: $page-background-color;
+    border-radius: $tile-border-radius * 2;
+    top: -10px;
+    left: 20px;
+    padding: 0 5px;
+  }
 }
 
 .console-container:hover {
-	pre {
-		height: 300px;
-		-webkit-transition-delay: 0s;
-		-moz-transition-delay: 0s;
-	}
+  pre {
+    height: 300px;
+    @include transition-delay(0s);
+  }
 }
+
+.leaderboard {
+  position: relative;
+  background-color: $game-container-background;
+  border-radius: $tile-border-radius * 2;
+  color: white;
+  margin-top: 20px;
+  padding: 30px 20px 15px 20px;
+
+  &:after {
+    position: absolute;
+    width: 100%;
+    top: 10px;
+    left: 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 13px;
+    text-align: center;
+    color: $tile-color;
+    content: "Leaderboards";
+  }
+
+  .names {
+    float: left;
+  }
+
+  .scores {
+    float: right;
+    text-align: right;
+  }
+}
+

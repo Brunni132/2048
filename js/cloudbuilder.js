@@ -47,17 +47,12 @@ CloudBuilder.prototype.loginAnonymously = function(whenDone) {
 	}.bind(this));
 };
 
-CloudBuilder.prototype.fetchHighScore = function(whenDone) {
+CloudBuilder.prototype.fetchHighScores = function(whenDone) {
   this.ensureLoggedIn(function() {
     var lb = this.clan.withGamer(this.gamerData).leaderboards();
-    lb.getHighscores(this.boardName, 1, 10, function(err, scores) {
-      this.log("Got scores", scores);
-      // No score (leaderboard absent)
-      if (!scores || scores.score.scores.length == 0) {
-        whenDone(0);
-      } else {
-        whenDone(scores.score.scores[0].score.score);
-      }
+    lb.getHighscores(this.boardName, 1, 10, function(err, result) {
+      this.log("Got scores", err || result);
+      whenDone(result.score.scores);
     }.bind(this));
   }.bind(this));
 };
