@@ -5,9 +5,14 @@ function HTMLActuator() {
   this.messageContainer = document.querySelector(".game-message");
   this.leaderboardNames = document.querySelector(".leaderboard .names");
   this.leaderboardScores = document.querySelector(".leaderboard .scores");
+  this.nameInputText = document.querySelector(".name-input-text");
 
   this.score = 0;
 }
+
+HTMLActuator.prototype.initialize = function(metadata) {
+  this.nameInputText.value = metadata.gamerName;
+};
 
 HTMLActuator.prototype.actuate = function (grid, metadata) {
   var self = this;

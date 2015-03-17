@@ -13,11 +13,15 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+  this.inputManager.on("changeName", this.changeName.bind(this));
 
   this.setup();
 
   //COTC Update the score once logged in
   this.cloudBuilder.setup(function(err, gamerData) {
+    this.actuator.initialize({
+      gamerName: gamerData.profile.displayName
+    });
     this.updateBestScore();
   }.bind(this));
 }
@@ -33,6 +37,11 @@ GameManager.prototype.restart = function () {
 GameManager.prototype.keepPlaying = function () {
   this.keepPlaying = true;
   this.actuator.continueGame(); // Clear the game won/lost message
+};
+
+GameManager.prototype.changeName = function(newName) {
+  // The leaderboards have potentially changed with our name
+  this.cloudBuilder.changeName(newName, this.updateBestScore.bind(this));
 };
 
 // Return true if the game is lost, or has won and the user hasn't kept playing

@@ -728,6 +728,37 @@ hr {
   -moz-transition-delay: 0s;
   transition-delay: 0s; }
 
+.name-input {
+  margin-top: 30px;
+  position: relative; }
+
+.name-input-left {
+  overflow: hidden; }
+  .name-input-left input {
+    display: inline-block;
+    background: #eee4da;
+    border: 1px solid #bbada0;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #776E65;
+    height: 36px;
+    font-size: 18px;
+    width: 95%;
+    margin: 0; }
+
+.name-input-change {
+  display: inline-block;
+  background: #8f7a66;
+  border-radius: 3px;
+  padding: 0 20px;
+  text-decoration: none;
+  color: #f9f6f2;
+  height: 40px;
+  line-height: 42px;
+  display: block;
+  text-align: center;
+  float: right; }
+
 .leaderboard {
   position: relative;
   background-color: #bbada0;

@@ -26,7 +26,7 @@ html, body {
   margin: 0;
   padding: 0;
 
-  background: #faf8ef;
+  background: $page-background-color;
   color: $text-color;
   font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 18px;
@@ -166,6 +166,17 @@ hr {
   color: $bright-text-color;
   height: 40px;
   line-height: 42px;
+}
+
+@mixin input {
+  display: inline-block;
+  background: $tile-color;
+  border: 1px solid $game-container-background;
+  border-radius: 3px;
+  text-decoration: none;
+  color: $text-color;
+  height: 36px;
+  font-size: 18px;
 }
 
 // Game field mixin used to render CSS at different width
@@ -581,6 +592,28 @@ hr {
     height: 300px;
     @include transition-delay(0s);
   }
+}
+
+.name-input {
+  margin-top: 30px;
+  position: relative;
+}
+
+.name-input-left {
+  overflow: hidden;
+
+  input {
+    @include input;
+    width: 95%;
+    margin: 0;
+  }
+}
+
+.name-input-change {
+  @include button;
+  display: block;
+  text-align: center;
+  float: right;
 }
 
 .leaderboard {
