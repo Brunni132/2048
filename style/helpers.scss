@@ -27,6 +27,12 @@
   transition: $args;
 }
 
+@mixin transition-delay($args...) {
+  -webkit-transition-delay: $args;
+  -moz-transition-delay: $args;
+  transition-delay: $args;
+}
+
 @mixin transition-property($args...) {
   -webkit-transition-property: $args;
   -moz-transition-property: $args;

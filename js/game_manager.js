@@ -3,14 +3,27 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.inputManager   = new InputManager;
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
+  // COTC added this
+  this.leaderboards   = null;
+  this.cloudBuilder   = new CloudBuilder(this.storageManager);
+  // END COTC
 
   this.startTiles     = 2;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+  this.inputManager.on("changeName", this.changeName.bind(this));
 
   this.setup();
+
+  //COTC Update the score once logged in
+  this.cloudBuilder.setup(function(err, gamerData) {
+    this.actuator.initialize({
+      gamerName: gamerData.profile.displayName
+    });
+    this.updateBestScore();
+  }.bind(this));
 }
 
 // Restart the game
@@ -24,6 +37,11 @@ GameManager.prototype.restart = function () {
 GameManager.prototype.keepPlaying = function () {
   this.keepPlaying = true;
   this.actuator.continueGame(); // Clear the game won/lost message
+};
+
+GameManager.prototype.changeName = function(newName) {
+  // The leaderboards have potentially changed with our name
+  this.cloudBuilder.changeName(newName, this.updateBestScore.bind(this));
 };
 
 // Return true if the game is lost, or has won and the user hasn't kept playing
@@ -55,7 +73,7 @@ GameManager.prototype.setup = function () {
   }
 
   // Update the actuator
-  this.actuate();
+  this.update();
 };
 
 // Set up the initial tiles to start the game with
@@ -77,26 +95,51 @@ GameManager.prototype.addRandomTile = function () {
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {
-  if (this.storageManager.getBestScore() < this.score) {
-    this.storageManager.setBestScore(this.score);
-  }
-
   // Clear the state when the game is over (game over only, not win)
   if (this.over) {
     this.storageManager.clearGameState();
   } else {
     this.storageManager.setGameState(this.serialize());
   }
-
+  
   this.actuator.actuate(this.grid, {
-    score:      this.score,
-    over:       this.over,
-    won:        this.won,
-    bestScore:  this.storageManager.getBestScore(),
-    terminated: this.isGameTerminated()
+    score:        this.score,
+    over:         this.over,
+    won:          this.won,
+    bestScore:    this.bestScore(),
+    leaderboards: this.leaderboards,
+    gamerId:      this.cloudBuilder.gamerData ? this.cloudBuilder.gamerData.gamer_id : null,
+    terminated:   this.isGameTerminated()
   });
 
 };
+
+GameManager.prototype.update = function() {
+  // Game over, post our score
+  if (this.over || this.won) {
+    this.cloudBuilder.postScore(this.score, function (err, result) {
+      // Once the score is posted, and update the list of high scores
+      this.updateBestScore();
+    }.bind(this));
+  }
+  // Update display
+  this.actuate();
+};
+
+GameManager.prototype.updateBestScore = function() {
+  // Update display with the new high score
+  this.cloudBuilder.fetchHighScores(function(scores) {
+    this.leaderboards = scores;
+    this.actuate();
+  }.bind(this));
+};
+
+GameManager.prototype.bestScore = function() {
+  if (this.leaderboards) {
+    return this.leaderboards[0].score.score;
+  }
+  return 0;
+}
 
 // Represent the current game as an object
 GameManager.prototype.serialize = function () {
@@ -186,7 +229,7 @@ GameManager.prototype.move = function (direction) {
       this.over = true; // Game over!
     }
 
-    this.actuate();
+    this.update();
   }
 };
 

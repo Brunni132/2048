@@ -1,5 +1,6 @@
 function KeyboardInputManager() {
   this.events = {};
+  this.inNameBox = false;
 
   if (window.navigator.msPointerEnabled) {
     //Internet Explorer 10 style
@@ -55,6 +56,9 @@ KeyboardInputManager.prototype.listen = function () {
                     event.shiftKey;
     var mapped    = map[event.which];
 
+      // In the name box, enter changes the name
+    if (self.inNameBox && event.which == 13)
+      self.changeName(event);
     // Ignore the event if it's happening in a text field
     if (self.targetIsInput(event)) return;
 
@@ -75,7 +79,12 @@ KeyboardInputManager.prototype.listen = function () {
   this.bindButtonPress(".retry-button", this.restart);
   this.bindButtonPress(".restart-button", this.restart);
   this.bindButtonPress(".keep-playing-button", this.keepPlaying);
-
+  this.bindButtonPress(".name-input-change", this.changeName);
+  
+  // Do not respond to keys when the name entry is in focus
+  this.bindEvent(".name-input-text", "focus", function() { this.inNameBox = true; });
+  this.bindEvent(".name-input-text", "blur", function() { this.inNameBox = false; });
+  
   // Respond to swipe events
   var touchStartClientX, touchStartClientY;
   var gameContainer = document.getElementsByClassName("game-container")[0];
@@ -140,6 +149,17 @@ KeyboardInputManager.prototype.restart = function (event) {
 KeyboardInputManager.prototype.keepPlaying = function (event) {
   event.preventDefault();
   this.emit("keepPlaying");
+};
+
+KeyboardInputManager.prototype.changeName = function (event) {
+  var newName = document.querySelector(".name-input-text").value;
+  event.preventDefault();
+  this.emit("changeName", newName);
+};
+
+KeyboardInputManager.prototype.bindEvent = function (selector, event, fn) {
+  var item = document.querySelector(selector);
+  item.addEventListener(event, fn.bind(this));
 };
 
 KeyboardInputManager.prototype.bindButtonPress = function (selector, fn) {

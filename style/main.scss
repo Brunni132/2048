@@ -18,6 +18,7 @@ $tile-gold-glow-color: lighten($tile-gold-color, 15%);
 
 $game-container-margin-top: 40px;
 $game-container-background: #bbada0;
+$page-background-color: #faf8ef;
 
 $transition-speed: 100ms;
 
@@ -25,7 +26,7 @@ html, body {
   margin: 0;
   padding: 0;
 
-  background: #faf8ef;
+  background: $page-background-color;
   color: $text-color;
   font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 18px;
@@ -215,6 +216,17 @@ hr {
     margin-top: 20%;
     // margin-top: 150px;
   }
+}
+
+@mixin input {
+  display: inline-block;
+  background: $tile-color;
+  border: 1px solid $game-container-background;
+  border-radius: 3px;
+  text-decoration: none;
+  color: $text-color;
+  height: 36px;
+  font-size: 18px;
 }
 
 // Game field mixin used to render CSS at different width
@@ -551,7 +563,7 @@ hr {
 }
 
 .game-explanation {
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .sharing {
@@ -844,3 +856,97 @@ hr {
     height: 76px;
   }
 }
+
+// COTC added
+.console-container {
+  background-color: $tile-color;
+  margin-top: 30px;
+  border: 1px solid $game-container-background;
+  border-radius: $tile-border-radius * 2;
+  position: relative;
+  pre {
+    font-family: "Ubuntu Mono";
+    font-size: 14px;
+    margin: 10px; padding: 0;
+    overflow: auto;
+    height: 14px;
+    @include transition(height 500ms);
+    @include transition-delay(1s);
+  }
+  span {
+    font-size: 12px;
+    position: absolute;
+    background: $page-background-color;
+    border-radius: $tile-border-radius * 2;
+    top: -10px;
+    left: 20px;
+    padding: 0 5px;
+  }
+}
+
+.console-container:hover {
+  pre {
+    height: 300px;
+    @include transition-delay(0s);
+  }
+}
+
+.name-input {
+  margin-top: 30px;
+  position: relative;
+}
+
+.name-input-left {
+  overflow: hidden;
+
+  input {
+    @include input;
+    width: 95%;
+    margin: 0;
+  }
+}
+
+.name-input-change {
+  @include button;
+  display: block;
+  text-align: center;
+  float: right;
+}
+
+.leaderboard {
+  position: relative;
+  background-color: $game-container-background;
+  border-radius: $tile-border-radius * 2;
+  color: white;
+  margin-top: 20px;
+  padding: 30px 20px 15px 20px;
+
+  &:after {
+    position: absolute;
+    width: 100%;
+    top: 10px;
+    left: 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 13px;
+    text-align: center;
+    color: $tile-color;
+    content: "Leaderboards";
+  }
+
+  .names {
+    float: left;
+  }
+
+  .scores {
+    float: right;
+    text-align: right;
+  }
+  
+  .highlighted-score {
+    color: darken($tile-color, 5%);
+    font-weight: bold;
+  }
+}
+

@@ -4,9 +4,16 @@ function HTMLActuator() {
   this.bestContainer    = document.querySelector(".best-container");
   this.messageContainer = document.querySelector(".game-message");
   this.sharingContainer = document.querySelector(".score-sharing");
+  this.leaderboardNames = document.querySelector(".leaderboard .names");
+  this.leaderboardScores = document.querySelector(".leaderboard .scores");
+  this.nameInputText = document.querySelector(".name-input-text");
 
   this.score = 0;
 }
+
+HTMLActuator.prototype.initialize = function(metadata) {
+  this.nameInputText.value = metadata.gamerName;
+};
 
 HTMLActuator.prototype.actuate = function (grid, metadata) {
   var self = this;
@@ -24,6 +31,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
 
     self.updateScore(metadata.score);
     self.updateBestScore(metadata.bestScore);
+    self.updateLeaderboards(metadata.leaderboards, metadata.gamerId);
 
     if (metadata.terminated) {
       if (metadata.over) {
@@ -127,6 +135,22 @@ HTMLActuator.prototype.updateScore = function (score) {
 
 HTMLActuator.prototype.updateBestScore = function (bestScore) {
   this.bestContainer.textContent = bestScore;
+};
+
+HTMLActuator.prototype.updateLeaderboards = function (scores, gamerId) {
+  this.leaderboardNames.innerHTML = this.leaderboardScores.innerHTML = "";
+  if (scores) {
+    scores.forEach(function(entry) {
+      function highlight(text) {
+        if (entry.gamer_id === gamerId)
+          return "<span class='highlighted-score'>" + text + "</span>";
+        return text;
+      };
+
+      this.leaderboardNames.innerHTML += highlight(entry.profile.displayName) + "<br/>";
+      this.leaderboardScores.innerHTML += highlight(entry.score.score) + "<br/>";
+    }.bind(this));
+  }
 };
 
 HTMLActuator.prototype.message = function (won) {
