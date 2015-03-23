@@ -213,7 +213,7 @@ hr {
   }
 
   100% {
-    margin-top: 20%;
+    margin-top: 7%;
     // margin-top: 150px;
   }
 }
@@ -287,7 +287,7 @@ hr {
     }
 
     .mailing-list {
-      margin-top: 52px;
+      margin-top: 32px;
 
       strong {
         display: block;
@@ -296,6 +296,20 @@ hr {
 
       .mailing-list-email-field {
         width: 230px;
+        margin-right: 5px;
+      }
+    }
+
+    .name-input {
+      margin-top: 32px;
+
+      strong {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .name-input-text {
+        width: 200px;
         margin-right: 5px;
       }
     }
@@ -337,6 +351,11 @@ hr {
       }
 
       .mailing-list {
+        @include animation(fade-in 1.5s ease-in-out $transition-speed * 25);
+        @include animation-fill-mode(both);
+      }
+      
+      .name-input {
         @include animation(fade-in 1.5s ease-in-out $transition-speed * 25);
         @include animation-fill-mode(both);
       }
@@ -889,28 +908,6 @@ hr {
     height: 300px;
     @include transition-delay(0s);
   }
-}
-
-.name-input {
-  margin-top: 30px;
-  position: relative;
-}
-
-.name-input-left {
-  overflow: hidden;
-
-  input {
-    @include input;
-    width: 95%;
-    margin: 0;
-  }
-}
-
-.name-input-change {
-  @include button;
-  display: block;
-  text-align: center;
-  float: right;
 }
 
 .leaderboard {

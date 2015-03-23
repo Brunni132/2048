@@ -116,7 +116,7 @@ GameManager.prototype.actuate = function () {
 
 GameManager.prototype.update = function() {
   // Game over, post our score
-  if (this.over || this.won) {
+  if (this.isGameTerminated()) {
     this.cloudBuilder.postScore(this.score, function (err, result) {
       // Once the score is posted, and update the list of high scores
       this.updateBestScore();
@@ -130,6 +130,8 @@ GameManager.prototype.updateBestScore = function() {
   // Update display with the new high score
   this.cloudBuilder.fetchHighScores(function(scores) {
     this.leaderboards = scores;
+    // Avoid tiles to move again when refreshed
+    this.prepareTiles();
     this.actuate();
   }.bind(this));
 };
