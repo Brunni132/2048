@@ -69,5 +69,5 @@ LocalStorageManager.prototype.getGamerData = function() {
 };
 
 LocalStorageManager.prototype.setGamerData = function(gamerData) {
-	this.storage.setItem(this.gamerDataKey, JSON.stringify(gamerData));
+  this.storage.setItem(this.gamerDataKey, JSON.stringify(gamerData));
 };

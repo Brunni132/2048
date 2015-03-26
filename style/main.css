@@ -1066,6 +1066,7 @@ hr {
   .console-container pre {
     font-family: "Ubuntu Mono";
     font-size: 14px;
+    font-weight: bold;
     margin: 10px;
     padding: 0;
     overflow: auto;
@@ -1076,7 +1077,10 @@ hr {
     -webkit-transition-delay: 1s;
     -moz-transition-delay: 1s;
     transition-delay: 1s; }
-  .console-container span {
+    .console-container pre .object {
+      font-weight: normal;
+      font-size: 12px; }
+  .console-container .title {
     font-size: 12px;
     position: absolute;
     background: #faf8ef;
@@ -1118,5 +1122,128 @@ hr {
   .leaderboard .highlighted-score {
     color: #e6d7c9;
     font-weight: bold; }
+
+.social-button, .login-email-button, .login-facebook-button, .login-google-button, .logout-button {
+  border-radius: 3px;
+  padding: 0;
+  text-decoration: none;
+  font-weight: normal;
+  color: #f9f6f2;
+  height: 35px;
+  line-height: 36px;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  width: 32%;
+  margin: 0 1% 0 0; }
+
+@-webkit-keyframes dialog-appear {
+  0% {
+    transform: scale(0); }
+  80% {
+    transform: scale(1.1); }
+  100% {
+    transform: scale(1); } }
+@-moz-keyframes dialog-appear {
+  0% {
+    transform: scale(0); }
+  80% {
+    transform: scale(1.1); }
+  100% {
+    transform: scale(1); } }
+@keyframes dialog-appear {
+  0% {
+    transform: scale(0); }
+  80% {
+    transform: scale(1.1); }
+  100% {
+    transform: scale(1); } }
+@-webkit-keyframes dialog-disappear {
+  0% {
+    transform: scale(1); }
+  40% {
+    transform: scale(1.1); }
+  100% {
+    transform: scale(0); } }
+@-moz-keyframes dialog-disappear {
+  0% {
+    transform: scale(1); }
+  40% {
+    transform: scale(1.1); }
+  100% {
+    transform: scale(0); } }
+@keyframes dialog-disappear {
+  0% {
+    transform: scale(1); }
+  40% {
+    transform: scale(1.1); }
+  100% {
+    transform: scale(0); } }
+.login-email-button {
+  background: #a0a0a0;
+  display: none; }
+
+.login-facebook-button {
+  background: #3b5998; }
+
+.login-google-button {
+  background: #dd4b39; }
+
+.logout-button {
+  background: #a01023;
+  display: none; }
+
+.modalDialog {
+  position: fixed;
+  font-family: Arial, Helvetica, sans-serif;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  -webkit-transition: opacity 400ms ease-in;
+  -moz-transition: opacity 400ms ease-in;
+  transition: opacity 400ms ease-in;
+  pointer-events: none; }
+  .modalDialog input {
+    margin-bottom: 3px; }
+  .modalDialog > div {
+    -webkit-animation: dialog-disappear 400ms ease-out;
+    -moz-animation: dialog-disappear 400ms ease-out;
+    animation: dialog-disappear 400ms ease-out;
+    width: 450px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 10px;
+    background: #eee4da; }
+    @media screen and (max-width: 520px) {
+      .modalDialog > div {
+        width: 250px;
+        padding: 5px 10px 8px 10px; } }
+  .modalDialog:target {
+    opacity: 1;
+    pointer-events: auto; }
+    .modalDialog:target > div {
+      -webkit-animation: dialog-appear 400ms ease-out;
+      -moz-animation: dialog-appear 400ms ease-out;
+      animation: dialog-appear 400ms ease-out; }
+  .modalDialog .close {
+    background: #716051;
+    color: #FFFFFF;
+    line-height: 25px;
+    position: absolute;
+    right: -12px;
+    text-align: center;
+    top: -10px;
+    width: 24px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 12px;
+    box-shadow: 1px 1px 3px #000; }
+    .modalDialog .close:hover {
+      background: #ceb194; }
 
 /*# sourceMappingURL=main.css.map */

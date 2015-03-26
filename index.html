@@ -9,6 +9,7 @@
   <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
   <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone 5+ -->
   <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x920.png"  media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone, retina -->
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -129,8 +130,29 @@
       <div style="clear: both;"></div>
     </div>
 
+    <p class="game-explanation">
+      Log-in to save game progress!<br/>
+      <a class="logout-button">Logout</a><a href="#loginEmailForm" class="login-email-button">E-mail</a><a class="login-facebook-button">Facebook</a><a class="login-google-button">Google+</a>
+    </p>
+
+    <div id="loginEmailForm" class="modalDialog">
+      <div>
+        <a href="#close" title="Close" class="close">X</a>
+        <h2>Log in by e-mail</h2>
+        <p>Please enter your information below.</p>
+        <p>
+          <input type="email" class="email-input" placeholder="E-mail" spellcheck="false">
+          <input type="text" class="password-input" placeholder="Password" spellcheck="false">
+        </p>
+        <p>
+          <input type="button" value="Log in" class="login-button">
+          <input type="button" value="Register" class="register-button">
+        </p>
+      </div>
+    </div>
+
     <div class="console-container">
-      <span>CloudBuilder Console (hover to expand)</span>
+      <span class="title">CloudBuilder Console (hover to expand)</span>
       <pre id="console"></pre>
     </div>
 
@@ -169,12 +191,14 @@
   <script src="js/bind_polyfill.js"></script>
   <script src="js/classlist_polyfill.js"></script>
   <script src="js/animframe_polyfill.js"></script>
+  <script src="js/observable_event.js"></script>
   <script src="js/keyboard_input_manager.js"></script>
   <script src="js/html_actuator.js"></script>
   <script src="js/grid.js"></script>
   <script src="js/tile.js"></script>
   <script src="js/cloudbuilder-bundle.min.js"></script>
   <script src="js/cloudbuilder.js"></script>
+  <script src="js/login_ui.js"></script>
   <script src="js/local_storage_manager.js"></script>
   <script src="js/game_manager.js"></script>
   <script src="js/application.js"></script>

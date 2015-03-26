@@ -6,6 +6,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   // COTC added this
   this.leaderboards   = null;
   this.cloudBuilder   = new CloudBuilder(this.storageManager);
+  this.loginUi        = new LoginUi(this.storageManager, this.cloudBuilder);
   // END COTC
 
   this.startTiles     = 2;
@@ -17,13 +18,13 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
 
   this.setup();
 
-  //COTC Update the score once logged in
-  this.cloudBuilder.setup(function(err, gamerData) {
-    this.actuator.initialize({
-      gamerName: gamerData.profile.displayName
-    });
+  // COTC Whenever login info change, update the game UI
+  this.loginUi.loginStateChanged.onEvent(function() {
+    var gamerData = this.cloudBuilder.gamerData;
+    this.actuator.initialize({gamerName: gamerData.profile.displayName});
     this.updateBestScore();
   }.bind(this));
+  this.cloudBuilder.setup(this.loginUi.setupDone.bind(this.loginUi));
 }
 
 // Restart the game
