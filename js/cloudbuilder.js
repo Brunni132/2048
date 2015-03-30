@@ -69,9 +69,9 @@ CloudBuilder.prototype.loginWithId = function(network, gamerId, gamerSecret, opt
   }.bind(this));
 };
 
-CloudBuilder.prototype.convertToEmailAccount = function(gamerId, gamerSecret, whenDone) {
+CloudBuilder.prototype.convertAccount = function(network, gamerId, gamerSecret, whenDone) {
   this.ensureLoggedIn(function() {
-    this.clan.withGamer(this.gamerData).convertTo("email", gamerId, gamerSecret, function (err, result) {
+    this.clan.withGamer(this.gamerData).convertTo(network, gamerId, gamerSecret, function (err, result) {
       this.log("Converted account!", err || result);
       if (!err) {
         // Things changed, we need to log in back again to fetch the modified profile

@@ -29,17 +29,17 @@ input {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none; }
-  input[type="text"], input[type="email"] {
+  input[type="text"], input[type="email"], input[type="password"] {
     cursor: auto;
     background: #fcfbf9;
     font-weight: normal;
     color: #776E65;
     padding: 0 15px; }
-    input[type="text"]::-webkit-input-placeholder, input[type="email"]::-webkit-input-placeholder {
+    input[type="text"]::-webkit-input-placeholder, input[type="email"]::-webkit-input-placeholder, input[type="password"]::-webkit-input-placeholder {
       color: #9d948c; }
-    input[type="text"]::-moz-placeholder, input[type="email"]::-moz-placeholder {
+    input[type="text"]::-moz-placeholder, input[type="email"]::-moz-placeholder, input[type="password"]::-moz-placeholder {
       color: #9d948c; }
-    input[type="text"]:-ms-input-placeholder, input[type="email"]:-ms-input-placeholder {
+    input[type="text"]:-ms-input-placeholder, input[type="email"]:-ms-input-placeholder, input[type="password"]:-ms-input-placeholder {
       color: #9d948c; }
 
 .heading:after {
@@ -1134,7 +1134,7 @@ hr {
   cursor: pointer;
   display: inline-block;
   text-align: center;
-  width: 32%;
+  width: 49%;
   margin: 0 1% 0 0; }
 
 @-webkit-keyframes dialog-appear {

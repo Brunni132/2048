@@ -59,7 +59,7 @@ input {
   margin: 0;
   @include appearance(none);
 
-  &[type="text"], &[type="email"] {
+  &[type="text"], &[type="email"], &[type="password"] {
     cursor: auto;
     background: lighten($tile-color, 9%);
     font-weight: normal;
@@ -965,7 +965,7 @@ hr {
   cursor: pointer;
   display: inline-block;
   text-align: center;
-  width: 32%;
+  width: 49%;
   margin: 0 1% 0 0;
 }
 
