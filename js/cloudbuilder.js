@@ -85,7 +85,19 @@ CloudBuilder.prototype.convertAccount = function(network, gamerId, gamerSecret, 
 CloudBuilder.prototype.logout = function(whenDone) {
   // We do not really support logging out, we always need an anonymous account, so just create one instead!
   this.storageManager.setGamerData(null);
+  this.gamerData = null;
   this.loginAnonymously(whenDone);
+};
+
+CloudBuilder.prototype.checkAndRelog = function(err, whenDone) {
+  if (err && err.status == 401) {
+    this.log("Invalid login token, creating a new anonymous login");
+    this.storageManager.setGamerData(null);
+    this.gamerData = null;
+    this.loginAnonymously(whenDone);
+    return true;
+  }
+  return false;
 };
 
 CloudBuilder.prototype.changeName = function(newName, whenDone) {
@@ -107,7 +119,10 @@ CloudBuilder.prototype.fetchHighScores = function(whenDone) {
     var lb = this.clan.withGamer(this.gamerData).leaderboards();
     lb.getHighscores(this.boardName, 1, this.maxScores, function(err, result) {
       this.log("Got scores", err || result);
-      whenDone(result.score.scores);
+      // Might have failed, try again in that case
+      if (!this.checkAndRelog(err, this.fetchHighScores.bind(this, whenDone))) {
+        whenDone(result.score.scores);
+      }
     }.bind(this));
   }.bind(this));
 };

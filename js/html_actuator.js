@@ -147,7 +147,8 @@ HTMLActuator.prototype.updateLeaderboards = function (scores, gamerId) {
         return text;
       };
 
-      this.leaderboardNames.innerHTML += highlight(entry.profile.displayName) + "<br/>";
+      var gamerName = entry.profile ? entry.profile.displayName : entry.gamer_id;
+      this.leaderboardNames.innerHTML += highlight(gamerName) + "<br/>";
       this.leaderboardScores.innerHTML += highlight(entry.score.score) + "<br/>";
     }.bind(this));
   }

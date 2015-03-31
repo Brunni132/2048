@@ -138,7 +138,7 @@ GameManager.prototype.updateBestScore = function() {
 };
 
 GameManager.prototype.bestScore = function() {
-  if (this.leaderboards) {
+  if (this.leaderboards && this.leaderboards.length > 0) {
     return this.leaderboards[0].score.score;
   }
   return 0;
