@@ -31,9 +31,10 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
 
 // Restart the game
 GameManager.prototype.restart = function () {
-  this.storageManager.clearGameState();
+  this.cloudBuilder.clearGameState();
   this.actuator.continueGame(); // Clear the game won/lost message
   this.setup();
+  this.actuate();
 };
 
 // Keep playing after winning (allows going over 2048)
@@ -66,7 +67,7 @@ GameManager.prototype.setup = function () {
 
 GameManager.prototype.restoreGameState = function() {
   this.cloudBuilder.getGameState(function(err, previousState) {
-    this.cloudBuilder.log("Updated game state");
+    this.cloudBuilder.log("Updated game state", err || previousState);
     // Reload the game from a previous game if present
     if (previousState) {
       this.grid        = new Grid(previousState.grid.size,
@@ -323,7 +324,6 @@ GameManager.prototype.didMove = function() {
   this.update();
   if (!this.lastMoveTimer) {
     this.lastMoveTimer = setTimeout(function() {
-      this.cloudBuilder.log("Saving game state");
       this.cloudBuilder.setGameState(this.serialize());
       this.lastMoveTimer = null;
     }.bind(this), 5000);

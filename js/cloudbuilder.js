@@ -149,7 +149,12 @@ CloudBuilder.prototype.setGameState = function(value, callback) {
   if (!callback) { callback = function() {}; }
   this.ensureLoggedIn(function() {
     var vfs = this.clan.withGamer(this.gamerData).gamervfs();
-    vfs.set(this.gameStateKey, value, callback);
+    this.log("Saving game state", value);
+    if (value) {
+      vfs.set(this.gameStateKey, value, callback);
+    } else {
+      vfs.del(this.gameStateKey, callback);
+    }
   }.bind(this));
 };
 

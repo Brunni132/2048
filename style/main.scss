@@ -6,6 +6,8 @@ $grid-spacing: 15px;
 $grid-row-cells: 4;
 $tile-size: ($field-width - $grid-spacing * ($grid-row-cells + 1)) / $grid-row-cells;
 $tile-border-radius: 3px;
+$game-over-below-margin: 32px;
+$email-above-margin: 25px;
 
 $mobile-threshold: $field-width + 20px;
 
@@ -302,7 +304,7 @@ hr {
 
     // COTC added
     .name-input {
-      margin-top: 32px;
+      margin-top: $game-over-below-margin;
 
       strong {
         display: block;
@@ -594,109 +596,6 @@ hr {
   > iframe, > span, > form {
     display: inline-block;
     vertical-align: middle;
-  }
-}
-
-// Redefine variables for smaller screens
-$field-width: 280px;
-$grid-spacing: 10px;
-$grid-row-cells: 4;
-$tile-size: ($field-width - $grid-spacing * ($grid-row-cells + 1)) / $grid-row-cells;
-$tile-border-radius: 3px;
-$game-container-margin-top: 17px;
-
-@include smaller($mobile-threshold) {
-  html, body {
-    font-size: 15px;
-  }
-
-  body {
-    margin-top: 0;
-    padding: 20px;
-  }
-
-  h1.title {
-    font-size: 27px;
-    margin-top: 15px;
-  }
-
-  .container {
-    width: $field-width;
-    margin: 0 auto;
-  }
-
-  .score-container, .best-container {
-    margin-top: 0;
-    padding: 15px 10px;
-    min-width: 40px;
-  }
-
-  .heading {
-    margin-bottom: 10px;
-  }
-
-  // Show intro and restart button side by side
-  .game-intro {
-    width: 55%;
-    display: block;
-    box-sizing: border-box;
-    line-height: 1.65;
-  }
-
-  .restart-button {
-    width: 42%;
-    padding: 0;
-    display: block;
-    box-sizing: border-box;
-    margin-top: 2px;
-  }
-
-  // Render the game field at the right width
-  @include game-field;
-
-  // Rest of the font-size adjustments in the tile class
-  .tile .tile-inner {
-    font-size: 35px;
-  }
-
-  .game-message {
-    padding-top: 0;
-
-    p {
-      font-size: 30px !important;
-      height: 30px !important;
-      line-height: 30px !important;
-      margin-top: 32% !important;
-      margin-bottom: 0 !important;
-    }
-
-    .lower {
-      margin-top: 10px !important;
-    }
-
-    &.game-won .score-sharing {
-      margin-top: 10px;
-    }
-
-    &.game-over .mailing-list {
-      margin-top: 25px;
-    }
-
-    .mailing-list {
-      margin-top: 10px;
-
-      .mailing-list-email-field {
-        width: 180px;
-      }
-    }
-  }
-
-  .sharing {
-    > iframe, > span, > form {
-      display: block;
-      margin: 0 auto;
-      margin-bottom: 20px;
-    }
   }
 }
 
@@ -1030,7 +929,7 @@ $game-container-margin-top: 17px;
     border-radius: 10px;
     background: $tile-color;
     @include smaller($mobile-threshold) {
-      width: 250px;
+      width: 250px !important;
       padding: 5px 10px 8px 10px;
     }
   }
@@ -1060,5 +959,127 @@ $game-container-margin-top: 17px;
     &:hover {
       background: darken($tile-color, 20%);
     };
+  }
+}
+
+// Redefine variables for smaller screens
+$field-width: 280px;
+$grid-spacing: 10px;
+$grid-row-cells: 4;
+$tile-size: ($field-width - $grid-spacing * ($grid-row-cells + 1)) / $grid-row-cells;
+$tile-border-radius: 3px;
+$game-container-margin-top: 17px;
+$game-over-below-margin: 12px;
+$email-above-margin: 12px;
+
+@include smaller($mobile-threshold) {
+  html, body {
+    font-size: 15px;
+  }
+
+  body {
+    margin-top: 0;
+    padding: 20px;
+  }
+
+  h1.title {
+    font-size: 27px;
+    margin-top: 15px;
+  }
+
+  .container {
+    width: $field-width;
+    margin: 0 auto;
+  }
+
+  .score-container, .best-container {
+    margin-top: 0;
+    padding: 15px 10px;
+    min-width: 40px;
+  }
+
+  .heading {
+    margin-bottom: 10px;
+  }
+
+  // Show intro and restart button side by side
+  .game-intro {
+    width: 55%;
+    display: block;
+    box-sizing: border-box;
+    line-height: 1.65;
+  }
+
+  .restart-button {
+    width: 42%;
+    padding: 0;
+    display: block;
+    box-sizing: border-box;
+    margin-top: 2px;
+  }
+
+  // Render the game field at the right width
+  @include game-field;
+
+  @include keyframes(slide-up) {
+    0% {
+      margin-top: 32%;
+      // margin-top: 222px;
+    }
+
+    100% {
+      margin-top: 2%;
+      // margin-top: 150px;
+    }
+  }
+
+  // Rest of the font-size adjustments in the tile class
+  .tile .tile-inner {
+    font-size: 35px;
+  }
+
+  .game-message {
+    padding-top: 0;
+
+    p {
+      font-size: 30px !important;
+      height: 30px !important;
+      line-height: 30px !important;
+      margin-top: 32% !important;
+      margin-bottom: 0 !important;
+    }
+
+    .lower {
+      margin-top: 10px !important;
+    }
+
+    &.game-won .score-sharing {
+      margin-top: 10px;
+    }
+
+    &.game-over .mailing-list {
+      margin-top: $email-above-margin;
+    }
+
+    .mailing-list {
+      margin-top: 10px;
+
+      .mailing-list-email-field {
+        width: 180px;
+      }
+    }
+
+    .name-input-text {
+      width: 165px !important;
+      margin-right: 5px;
+    }
+  }
+
+  .sharing {
+    > iframe, > span, > form {
+      display: block;
+      margin: 0 auto;
+      margin-bottom: 20px;
+    }
   }
 }
