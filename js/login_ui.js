@@ -106,7 +106,7 @@ LoginUi.prototype.loadFacebookSdk = function(callback) {
 
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : '1637585033131649',
+        appId      : '1604140363163743',
         xfbml      : true,
         version    : 'v2.3'
       });

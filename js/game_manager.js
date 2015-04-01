@@ -5,6 +5,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.actuator       = new Actuator;
   // COTC added this
   this.leaderboards   = null;
+  this.lastMoveTimer  = null;
   this.cloudBuilder   = new CloudBuilder(this.storageManager);
   this.loginUi        = new LoginUi(this.storageManager, this.cloudBuilder);
   // END COTC
@@ -23,6 +24,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
     var gamerData = this.cloudBuilder.gamerData;
     this.actuator.initialize({gamerName: gamerData.profile.displayName});
     this.updateBestScore();
+    this.restoreGameState();
   }.bind(this));
   this.cloudBuilder.setup(this.loginUi.setupDone.bind(this.loginUi));
 }
@@ -52,29 +54,31 @@ GameManager.prototype.isGameTerminated = function () {
 
 // Set up the game
 GameManager.prototype.setup = function () {
-  var previousState = this.storageManager.getGameState();
+  this.grid        = new Grid(this.size);
+  this.score       = 0;
+  this.over        = false;
+  this.won         = false;
+  this.keepPlaying = false;
 
-  // Reload the game from a previous game if present
-  if (previousState) {
-    this.grid        = new Grid(previousState.grid.size,
-                                previousState.grid.cells); // Reload grid
-    this.score       = previousState.score;
-    this.over        = previousState.over;
-    this.won         = previousState.won;
-    this.keepPlaying = previousState.keepPlaying;
-  } else {
-    this.grid        = new Grid(this.size);
-    this.score       = 0;
-    this.over        = false;
-    this.won         = false;
-    this.keepPlaying = false;
+  // Add the initial tiles
+  this.addStartTiles();
+};
 
-    // Add the initial tiles
-    this.addStartTiles();
-  }
-
-  // Update the actuator
-  this.update();
+GameManager.prototype.restoreGameState = function() {
+  this.cloudBuilder.getGameState(function(err, previousState) {
+    this.cloudBuilder.log("Updated game state");
+    // Reload the game from a previous game if present
+    if (previousState) {
+      this.grid        = new Grid(previousState.grid.size,
+                                  previousState.grid.cells); // Reload grid
+      this.score       = previousState.score;
+      this.over        = previousState.over;
+      this.won         = previousState.won;
+      this.keepPlaying = previousState.keepPlaying;
+    }
+    // Update the actuator
+    this.update();
+  }.bind(this));
 };
 
 // Set up the initial tiles to start the game with
@@ -98,9 +102,7 @@ GameManager.prototype.addRandomTile = function () {
 GameManager.prototype.actuate = function () {
   // Clear the state when the game is over (game over only, not win)
   if (this.over) {
-    this.storageManager.clearGameState();
-  } else {
-    this.storageManager.setGameState(this.serialize());
+    this.cloudBuilder.clearGameState();
   }
   
   this.actuator.actuate(this.grid, {
@@ -232,7 +234,7 @@ GameManager.prototype.move = function (direction) {
       this.over = true; // Game over!
     }
 
-    this.update();
+    this.didMove();
   }
 };
 
@@ -315,4 +317,15 @@ GameManager.prototype.tileMatchesAvailable = function () {
 
 GameManager.prototype.positionsEqual = function (first, second) {
   return first.x === second.x && first.y === second.y;
+};
+
+GameManager.prototype.didMove = function() {
+  this.update();
+  if (!this.lastMoveTimer) {
+    this.lastMoveTimer = setTimeout(function() {
+      this.cloudBuilder.log("Saving game state");
+      this.cloudBuilder.setGameState(this.serialize());
+      this.lastMoveTimer = null;
+    }.bind(this), 5000);
+  }
 };

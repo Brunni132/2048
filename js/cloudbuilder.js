@@ -2,6 +2,7 @@
 function CloudBuilder(storageManager) {
   this.boardName = "score";
   this.maxScores = 5;
+  this.gameStateKey = "gamestate";
   this.storageManager = storageManager;
 
   this.consoleNode = document.querySelector("#console");
@@ -137,6 +138,25 @@ CloudBuilder.prototype.postScore = function(score, whenDone) {
   }.bind(this));
 };
 
+CloudBuilder.prototype.getGameState = function(callback) {
+  this.ensureLoggedIn(function() {
+    var vfs = this.clan.withGamer(this.gamerData).gamervfs();
+    vfs.get(this.gameStateKey, callback);
+  }.bind(this));
+};
+
+CloudBuilder.prototype.setGameState = function(value, callback) {
+  if (!callback) { callback = function() {}; }
+  this.ensureLoggedIn(function() {
+    var vfs = this.clan.withGamer(this.gamerData).gamervfs();
+    vfs.set(this.gameStateKey, value, callback);
+  }.bind(this));
+};
+
+CloudBuilder.prototype.clearGameState = function(callback) {
+  this.setGameState(null, callback);
+};
+
 CloudBuilder.prototype.log = function(text, object) {
   this.consoleNode.innerHTML += text + "\n";
   if (object) {
@@ -146,4 +166,4 @@ CloudBuilder.prototype.log = function(text, object) {
   object ? console.log(text, object) : console.log(text);
   // Scroll to the bottom
   this.consoleNode.scrollTop = this.consoleNode.scrollHeight;
-}
+};
